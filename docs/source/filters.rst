@@ -422,15 +422,26 @@ Watching Github releases and Gitlab tags
 ----------------------------------------
 
 This is an example how to watch the GitHub “releases” page for a given
-project for the latest release version, to be notified of new releases:
+project for the latest release version, including pre-releases, and be notified:
 
 .. code:: yaml
 
    url: https://github.com/tulir/gomuks/releases
    filter:
-     - xpath: '(//div[contains(@class,"d-flex flex-column flex-md-row my-5 flex-justify-center")]//h1//a)[1]'
-     - html2text: re
-     - strip
+     - xpath:
+         path: //*[@class="Link--primary"]
+         maxitems: 1
+     - html2text:
+     
+If you only want to monitor the latest release and not include pre-releases:
+
+.. code:: yaml
+
+   url: https://github.com/Novik/ruTorrent/releases/latest
+   filter:
+     - xpath: //*[@class="ml-1"]
+     - html2text:
+     - strip     
 
 This is the corresponding version for Github tags:
 
@@ -438,9 +449,10 @@ This is the corresponding version for Github tags:
 
    url: https://github.com/thp/urlwatch/tags
    filter:
-     - xpath: (//div[contains(@class,"commit js-details-container Details")]//h4//a)[1]
-     - html2text
-     - strip
+     - xpath:
+         path: //*[@class="Link--primary"]
+         maxitems: 1
+     - html2text:
 
 and for Gitlab tags:
 
